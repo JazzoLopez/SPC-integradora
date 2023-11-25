@@ -1,0 +1,28 @@
+{
+  "name": "spc-integradora",
+  "version": "1.0.0",
+  "description": "Proyecto Realizado en Node.js para automatizar un servicio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JazzoLopez/SPC-integradora.git"
+  },
+  "keywords": [
+    "spc",
+    "node",
+    "express",
+    "api",
+    "rest",
+    "y",
+    "mas"
+  ],
+  "author": "Jazziel Rodriguez Lopez, Luis Ivan Marquez Azuara, Juan Alberto Vazquez Hernandez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JazzoLopez/SPC-integradora/issues"
+  },
+  "homepage": "https://github.com/JazzoLopez/SPC-integradora#readme"
+}
