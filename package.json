@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/JazzoLopez/SPC-integradora/issues"
   },
-  "homepage": "https://github.com/JazzoLopez/SPC-integradora#readme"
+  "homepage": "https://github.com/JazzoLopez/SPC-integradora#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
