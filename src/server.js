@@ -2,6 +2,7 @@ import  express  from "express";
 import dotenv from 'dotenv';
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser';
+import db from "./configs/db.js";
 const app = express();
 
 dotenv.config({
@@ -28,3 +29,15 @@ app.use(express.static('./src/public'));
 app.listen(process.env.SERVER_PORT, (request, response) => {
     console.log(`EL servicio HTTP ha sido iniciado... \n  El servicio esta escuchando por el puerto: ${process.env.SERVER_PORT}`)
 });
+
+try{
+    await db.authenticate();
+    console.log("La conexion a la base de datos ha sido exitosa");
+     db.sync();
+     console.log("Se ha sincronizado las tablas existentes en la base de datos")
+ }
+ catch(err){
+    console.log(err)
+     console.log("Ocurrio un error al intentar conectarse a la base de datos :c ");
+ 
+ }
