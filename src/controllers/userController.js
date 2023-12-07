@@ -1,13 +1,9 @@
 import User from "../models/User.js";
 import Service from "../models/Service.js";
 import Device from "../models/Device.js";
-import QuickChart from "quickchart-js";
-
-
 import { check, validationResult } from "express-validator";
 import bcrypt from 'bcrypt';
-import { generateToken,generateJwt, decodeJwt} from "../lib/token.js";
-
+import { generateJwt, generateToken, decodeJwt } from "../libs/token.js";
 
 const index = (request, response ) => {
     response.render("auth/home", {

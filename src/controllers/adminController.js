@@ -1,12 +1,11 @@
 import User from "../models/User.js";
 import Service from "../models/Service.js";
-import { Chart } from "chart.js";
 import { check, validationResult } from "express-validator";
 import bcrypt from 'bcrypt';
 import Log from "../models/log.js";
-import { generateToken, generateJwt, decodeJwt } from "../lib/token.js";
+import { generateJwt, generateToken, decodeJwt } from "../libs/token.js";
 import Device from "../models/Device.js";
-import { emailRegister } from "../lib/emails.js";
+import { emailRegister } from "../libs/emails.js";
 
 
 
