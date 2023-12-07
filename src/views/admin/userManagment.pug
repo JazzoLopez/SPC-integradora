@@ -1,4 +1,13 @@
 extends ../layout/index 
+block styles  
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/datatables.net-dt/css/jquery.dataTables.min.css") 
+    style.
+        #myTable_info, #myTable_paginate {
+        font-size: 0.75rem;  // Ajusta el tamaño de letra según tus preferencias
+        }
+        .dataTables_filter input {
+             font-size: 0.75rem;  // Ajusta el tamaño de letra del campo de búsqueda
+            }
 block content 
     nav(class="bg-gray-800 border border.lg p-2 font-extrabolder h-30 text-xl")
         div(class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative flex h-16 items-center justify-between")
@@ -29,7 +38,7 @@ block content
         div
             a(href="/admin-home/usuarios/nuevo-usuario", class="btnEditar bg-green-400 text-gray-600 px-4 py-2") Registrar nuevo usuario
             div.relative.overflow-x-auto.py-10
-                table(class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400")
+                table#myTable.table(class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400")
                     thead(class="text-xs text-white font-extrabold uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400")
                         tr
                             th(scope="col" class="px-6 py-3")
@@ -62,4 +71,7 @@ block content
                                     a(href=`/admin-home/usuarios/editar/${user.id}`, class="btnEditar bg-amber-500 text-white px-4 py-2") Editar
                                     a(href=`/admin-home/usuarios/borrar/${user.id}`, class="btnBorrar bg-red-500 text-white px-4 py-2") Borrar
 
-                                    
+block scripts
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script(src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js")
+    script(src="/js/pagination.js")                   
