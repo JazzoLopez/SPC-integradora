@@ -1,0 +1,86 @@
+extends ../layout/index 
+block content 
+    nav(class="bg-gray-800 border border.lg p-2 font-extrabolder h-30 text-xl")
+        div(class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative flex h-16 items-center justify-between")
+            div(class="absolute inset-y-0 left-0 flex items-center sm:hidden")
+                button(id="mobile-menu-button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" type="button" aria-controls="mobile-menu" aria-expanded="false")
+                    span(class="absolute -inset-0.5")
+                    span(class="sr-only") open main menu
+                    svg( class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true")
+                        path(stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5")
+            div(class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start")
+                div( class="flex flex-shrink-0 items-center")
+                    img(class="h-10 w-auto" src="/img/Grupo 1.png" alt="SPC company")
+                div(class="hidden sm:ml-6 sm:block space-x-4")
+                    a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="/admin-home") Dashboard
+                    a(class="bg-gray-900 text-white rounded-md px-3 py-2 text-base font-medium" href="/admin-home/usuarios" aria-current="page") Usuarios
+                    a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="/admin-home/servicios") Servicios
+                    a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="/logout") Cerrar sesion 
+            div( class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0")
+                p#msg.text-white Bienvenido Administrador 
+        div(id="mobile-menu" class="sm:hidden hidden")
+            div(class="space-y-1 px-2 pb-3 pt-2")
+                a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="/admin-home") Dashboard
+                a(class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" href="/admin-home/usuarios"  aria-current="page") Usuarios
+                a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="/admin-home/servicios") Servicios
+                a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="/logout") Cerrar sesion
+
+    div.py-2.tracking-wide
+    h1.text-center.text-4xl.my-10.font-extrabolder(class="text-SPC") SPC 
+        span.font-normal.text-black  
+    
+    h2.text-center.text-3xl.font-extrabold Nuevo servicio
+
+    if errors 
+        div#message.mt-8.mx-auto.max-w-xl(class="text-center time")
+            div.text-center(class="bg-red-500 text-white uppercase font-bold rounded-t px-4 mt-1 max-w-xl") danger
+                
+            div.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold(class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700  max-w-xl" )
+                each error in errors 
+                    p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
+    div.mt-8.mx-auto.max-w-4xl
+        .bg-white.py-8.px-4.shadow-x1.rounded-lg.border.border-gray-400.shadow-2xl
+            form.space-y-8(action="/properties/create" method="POST")
+                .space-y-8
+                    h3.text-lg.leading-6.font-md.tex-gray-900.font-bold Datos generales del servicio.
+                div
+                    label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="title") Correo del usuario
+                    input#title.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="title" placeholder="spc@domain.com"  value=propertyData && propertyData.title ? propertyData.title: '')
+                    
+                div
+                    label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="description") Descripcion:
+                    textarea#description.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="description" placeholder="Detalles acerca del servicio." 
+                    value=propertyData && propertyData.description ? propertyData.description: '')=propertyData && propertyData.description ? propertyData.description: ''
+                div(class="md:flex md:gap-4") 
+                    div(class="md:w-1/2")   
+                        label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="category")  Tipo de servicio
+                        select#category.w-full.px-3.py-2.border.border-gray-300.rounded(name="category")
+                            option(value="" selected) -- SELECCIONA --
+                            option(value="Correctivo") Correctivo
+                            option(value="Preventivo") Preventivo
+                            //- each category in categories 
+                            //-     option(value=category.id)=category.name
+                    div(class="md:w-1/2")
+                        label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="priceRange") Tipo de dispositivo
+                        select#priceRange.w-full.px-3.py-2.border.border-gray-300.rounded(name="priceRange")
+                            option(value="" selected) -- SELECCIONA --
+                            option(value="Impresora") Impresora
+                            option(value="Fotocopiadora") Fotocopiadora
+                            option(value="Multifuncional") Multifuncional
+                            option(value="Desktpo") Desktop
+                            option(value="Laptop") Laptop
+
+                div(class="md:flex md:gap-4") 
+                    div(class="md:w-1/3")   
+                        label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="nRooms") Marca
+                        input#title.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="title" placeholder="Marca"  value=propertyData && propertyData.title ? propertyData.title: '')
+                                     
+                    div(class="md:w-1/3")
+                        label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="nwc") Modelo
+                        input#title.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="title" placeholder="Modelo"  value=propertyData && propertyData.title ? propertyData.title: '')
+
+                    div(class="md:w-1/3")
+                        label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="parkingLot") Numero de serie
+                        input#title.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="title" placeholder="N.serie"  value=propertyData && propertyData.title ? propertyData.title: '')
+                button Guardar
+            

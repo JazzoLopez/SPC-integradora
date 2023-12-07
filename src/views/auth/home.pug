@@ -1,0 +1,113 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title SPCㅤ|ㅤ#{page}
+        
+        link(rel="stylesheet", href="css/style.css")
+        link(rel="preconnect", href="https://fonts.googleapis.com")
+        link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
+        link(rel="shortcut icon", href="img/Grupo 1.png", type="image/x-icon")
+        link(href="https://fonts.googleapis.com/css2?family=Inter&display=swap", rel="stylesheet")
+        link(rel="stylesheet", href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+    body 
+        header
+            nav.container-nav
+                a(href="")
+                    img(src="img/Grupo 1.png", alt="" class="logo-header")
+                h1.main-title Soporte Tecnico Empresarial 2.0
+
+        section.main-section
+            .hero-container
+                h1.h1-hero Soporte Tecníco TI
+                .p-hero-container
+                    p El soporte tecnico de TI es escencial para garantizar la productividad y la continuidad de la organizacion
+
+                    form(action="" class="form-hero")
+                        a(href="/login")
+                            input(type="button" value="Iniciar Sesion")                           
+        section.carrusel 
+            div 
+                img(src="img/HP-logo.png", alt="" class="img-carrusel")
+            div 
+                img(src="img/DELL-logo.png", alt="" class="img-carrusel")
+            div 
+                img(src="img/Lenovo-logo.png", alt="" class="img-carrusel")
+            div 
+                img(src="img/Microsoft-logo.png", alt="" class="img-carrusel")    
+        section.container-services
+            .title-services 
+                .h1-title 
+                    h1 Arma tu
+                    h1(style="color:#A40C3F") servicio
+                p Adaptable a las necesidades de tu negocio
+            .container-cards-services
+                .card
+                    img(src="img/renewable.png", alt="", class="img-card")
+                    h3 Renovacion Tecnogica 
+                    p Proyectos de actualizacion de hardware y/o software
+                .card
+                    img(src="img/inventory (1).png", alt="", class="img-card")
+                    h3 Gestion fe Inventarios
+                    p Administracion y control de activos de tecnologias de la informacion
+                .card
+                    img(src="img/data-management.png", alt="", class="img-card")
+                    h3 Movil, PC y Mac
+                    p Soporte a equipos de escritorio, laptops, tabletas, smartphones y mas
+                .card
+                    img(src="img/safety.png", alt="", class="img-card")
+                    h3 Preventivo 
+                    p educe costos, aumenta la productividad y la vida util de hardware
+                .card
+                    img(src="img/multifunction-printer.png", alt="", class="img-card")
+                    h3 Perifericos 
+                    p Soporte a impresoras, escaners y demas equipos de tecnologias de la informacion
+                .card
+                    img(src="img/proofreading.png", alt="", class="img-card")
+                    h3 Correctivo 
+                    p Soluciona en tiempo y forma incidentes que impactan la productividad
+                .card
+                    img(src="img/assurance.png", alt="", class="img-card")
+                    h3 Gestion de Garantias
+                    p Administracion, reclamacion y seguimiento a garantias con proveedores
+                .card
+                    img(src="img/purchase.png", alt="", class="img-card")
+                    h3 Con o sin refacciones 
+                    p Proveemos refacciones oara el soporte o las proporciona tu organizacion
+        section.info-container 
+            .flex-container
+                article.info-text   
+                    .h1-info 
+                        h1 Cobertura de toda la sierra
+                        h1(style="color: #A40C3F") Norte Poblama 
+                    p Nuestra cobertura es todo Xicotepec y sus alrededores 
+                aside.info-img 
+                    img(src="img/mapaxico.png", alt="", class="info-img")
+            .flex-container 
+        footer 
+            .footer-container
+                .map-container 
+                    #map.h-96
+                .form-container 
+                    h2.h2-footer Contactanos
+                    form(action="./" method="POST" name="form-footer" class="form-footer" target="_parent")
+                        label(for="name") Nombre
+                        input(type="text" name="name" id="name")
+                        br
+                        label(for="mail") Email
+                        imput(type="Email" name="mail" id="mail")
+                        br
+                        label(for="phone") Asunto
+                        imput(type="tel" name="phone" id="phone")
+                        br
+                        label(for="name") Mensaje
+                        textarea(name="message", cols="30", rows="4")
+                        br
+                        imput(type="submit" name="form-footer" value="Enviar Mensaje")
+                        br
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+    script( src="/js/map.js")

@@ -1,0 +1,65 @@
+extends ../layout/index 
+block content 
+    nav(class="bg-gray-800 border border.lg p-2 font-extrabolder h-30 text-xl")
+        div(class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 relative flex h-16 items-center justify-between")
+            div(class="absolute inset-y-0 left-0 flex items-center sm:hidden")
+                button(id="mobile-menu-button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" type="button" aria-controls="mobile-menu" aria-expanded="false")
+                    span(class="absolute -inset-0.5")
+                    span(class="sr-only") open main menu
+                    svg( class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true")
+                        path(stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5")
+            div(class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start")
+                div( class="flex flex-shrink-0 items-center")
+                    img(class="h-10 w-auto" src="/img/Grupo 1.png" alt="SPC company")
+                div(class="hidden sm:ml-6 sm:block space-x-4")
+                    a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="/admin-home") Dashboard
+                    a(class="bg-gray-900 text-white rounded-md px-3 py-2 text-base font-medium" href="usuarios" aria-current="page") Usuarios
+                    a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="servicios") Servicios
+                    a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="/logout") Cerrar sesion 
+            div( class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0")
+                p#msg.text-white Bienvenido Administrador 
+        div(id="mobile-menu" class="sm:hidden hidden")
+            div(class="space-y-1 px-2 pb-3 pt-2")
+                a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="/admin-home") Dashboard
+                a(class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" href="usuarios"  aria-current="page") Usuarios
+                a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="servicios") Servicios
+                a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="/logout") Cerrar sesion
+    .bg-white.shadow.py-8.px-4.rounded-xl.mx-auto.max-w-full.my-10.text-center.font-extrabold.space-y-5(class="md:px-10 text-lg") 
+        p Control de usuarios
+        div
+            a(href="/admin-home/usuarios/nuevo-usuario", class="btnEditar bg-green-400 text-gray-600 px-4 py-2") Registrar nuevo usuario
+            div.relative.overflow-x-auto.py-10
+                table(class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400")
+                    thead(class="text-xs text-white font-extrabold uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400")
+                        tr
+                            th(scope="col" class="px-6 py-3")
+                                | ID
+                            th(scope="col" class="px-6 py-3")
+                                | Nombre
+                            th(scope="col" class="px-6 py-3")
+                                | Apellidos
+                            th(scope="col" class="px-6 py-3")
+                                | Telefono
+                            th(scope="col" class="px-6 py-3")
+                                | Correo
+                            th(scope="col" class="px-6 py-3")
+                                | Tipo de usuario
+                            th(scope="col" class="px-6 py-3")
+                                | Modificacion
+                            th(scope="col" class="px-6 py-3")
+                                | Acccion   
+                    tbody
+                        each user in users
+                            tr(class="bg-white border-b.dark:bg-gray-800 dark:border-gray-700 text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-200")
+                                td(class="px-6 py-4") #{user.id}
+                                td(class="px-6 py-4") #{user.name}
+                                td(class="px-6 py-4") #{user.lastname}
+                                td(class="px-6 py-4") #{user.tel}
+                                td(class="px-6 py-4") #{user.email}
+                                td(class="px-6 py-4") #{user.type}
+                                td(class="px-6 py-4") #{new Date(user.updatedAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
+                                td(class="px-6 py-4")
+                                    a(href=`/admin-home/usuarios/editar/${user.id}`, class="btnEditar bg-amber-500 text-white px-4 py-2") Editar
+                                    a(href=`/admin-home/usuarios/borrar/${user.id}`, class="btnBorrar bg-red-500 text-white px-4 py-2") Borrar
+
+                                    

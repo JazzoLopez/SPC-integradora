@@ -1,0 +1,13 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        link(rel="shortcut icon", href="img/Grupo 1.png", type="image/x-icon")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title SPC | #{page}
+        link(rel="stylesheet", href="/css/app.css")
+        script(src="/js/setTime.js")
+    body.bg-gray-100.font-mono
+        main(class="mx-auto container mrt-10 px2")
+            block content
+        block scripts

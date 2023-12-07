@@ -1,0 +1,42 @@
+extends ../layout/index 
+block content
+    header.bg-gray-800.text-white.p-4
+        div.flex.items-center.justify-between
+            div.flex.items-center
+                a.w-full.flex.items-center.justify-start(href="/logout")
+                    img(src="/img/output.png", alt="Texto alternativo de la imagen" class="mr-3 w-10 h-10 rounded-full")
+                    span Cerrar sesion
+            div.flex.items-center
+                span Bienvenido #{user}
+
+    div.relative.overflow-x-auto.py-10
+        table(class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400")
+            thead(class="text-xs text-white font-extrabold uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400")
+                tr
+                    th(scope="col" class="px-6 py-3")
+                      | ID
+                    th(scope="col" class="px-6 py-3")
+                      | Descripción
+                    th(scope="col" class="px-6 py-3")
+                      | Tipo de servicio
+                    th(scope="col" class="px-6 py-3")
+                      | Tipo de dispositivo
+                    th(scope="col" class="px-6 py-3")
+                      | Marca
+                    th(scope="col" class="px-6 py-3")
+                      | Modelo
+                    th(scope="col" class="px-6 py-3")
+                      | Estatus
+                    th(scope="col" class="px-6 py-3")
+                      | Modificacion
+            tbody
+              each service in servicesData
+                    tr(class="bg-white border-b.dark:bg-gray-800 dark:border-gray-700 text-gray-900 whitespace-nowrap dark:text-white hover:bg-gray-200")
+                        td(class="px-6 py-4") #{service.id}
+                        td(class="px-6 py-4") #{service.description}
+                        td(class="px-6 py-4") #{service.typeService}
+                        td(class="px-6 py-4") #{service.tbb_device.typeDevice}
+                        td(class="px-6 py-4") #{service.tbb_device.brand}
+                        td(class="px-6 py-4") #{service.tbb_device.model}
+                        td(class="px-6 py-4") #{service.status}
+                        td(class="px-6 py-4") #{new Date(service.updatedAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
