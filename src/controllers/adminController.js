@@ -4,14 +4,14 @@ import { check, validationResult } from "express-validator";
 import bcrypt from 'bcrypt';
 import Log from "../models/log.js";
 import { generateJwt, generateToken, decodeJwt } from "../libs/token.js";
-import Device from "../models/Device.js";
 import { emailRegister } from "../libs/emails.js";
+import Device from "../models/Device.js";
 
 
 
 const insertUser = async (req, res) => {
 
-    
+
     console.log(`Nombre: ${req.body.name}`);
     //*Validando
     await check("name").notEmpty().withMessage("El nombre es obligatorii").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
@@ -36,7 +36,7 @@ const insertUser = async (req, res) => {
 
         res.render("auth/register.pug", ({
             page: "New account",
-            errors: [{ msg: `the user ${req.body.email} already exist` }],
+            errors: [{ msg: `El usuario ${req.body.email} ya existe` }],
             user: {
                 name: req.body.name,
                 email: req.body.email
@@ -50,7 +50,7 @@ const insertUser = async (req, res) => {
         //*Creando usuario */
 
         let newUser = await User.create({
-             name, lastname, tel, email, password, token
+            name, lastname, tel, email, password, token
         });
         res.render("templates/message.pug", {
             page: "Cuenta creada satisfactoriamente",
@@ -89,7 +89,7 @@ const adminHome = async (req, res) => {
     const adminData = await User.findOne({ where: { id: userID } })
     const name = adminData.type
     console.log(name);
-   
+
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
@@ -108,19 +108,19 @@ const adminHome = async (req, res) => {
 
         return saludo;
     }
-    
-    const device = await Device.findAll({where: {}})
+
+    const device = await Device.findAll({ where: {} })
     const deviceName = device.map(device => device.typeDevice)
     console.log(deviceName)
-    const total = await Device.count({where:{}})
-    
+    const total = await Device.count({ where: {} })
+
     let cifras = 100 / total
     console.log(cifras)
-    const laptop =await  Device.count({ where:{ typeDevice:"Laptop" }})
-    const Impresora =await  Device.count({ where:{ typeDevice:"Impresora" }})
-    const Fotocopiadora =await  Device.count({ where:{ typeDevice:"Fotocopiadora" }})
-    const Multifuncional =await  Device.count({ where:{ typeDevice:"Multifuncional" }})
-    const Desktop = await  Device.count({ where:{ typeDevice:"Desktop" }})
+    const laptop = await Device.count({ where: { typeDevice: "Laptop" } })
+    const Impresora = await Device.count({ where: { typeDevice: "Impresora" } })
+    const Fotocopiadora = await Device.count({ where: { typeDevice: "Fotocopiadora" } })
+    const Multifuncional = await Device.count({ where: { typeDevice: "Multifuncional" } })
+    const Desktop = await Device.count({ where: { typeDevice: "Desktop" } })
     const saludo = obtenerSaludo();
 
     res.render('admin/adminHome', {
@@ -131,13 +131,13 @@ const adminHome = async (req, res) => {
         Impresora,
         Fotocopiadora,
         Multifuncional,
-        Desktop,cifras
-        })
+        Desktop, cifras
+    })
 
 
 
 }
-const userControl = async(req, res) => {
+const userControl = async (req, res) => {
     const userToken = req.cookies._token;
     if (!userToken) {
         return res.redirect('/login');
@@ -148,18 +148,18 @@ const userControl = async(req, res) => {
     const adminData = await User.findOne({ where: { id: userID } })
     const name = adminData.type
     console.log(name);
-    const users = await User.findAll({where:{}})
-   
+    const users = await User.findAll({ where: {} })
+
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
-    res.render("admin/userManagment",{
-        page:"Gestion de usuarios",
+    res.render("admin/userManagment", {
+        page: "Gestion de usuarios",
         users
     })
 }
 
-const serviceControll = async(req, res) => {
+const serviceControll = async (req, res) => {
     const userToken = req.cookies._token;
     if (!userToken) {
         return res.redirect('/login');
@@ -170,18 +170,18 @@ const serviceControll = async(req, res) => {
     const adminData = await User.findOne({ where: { id: userID } })
     const name = adminData.type
     console.log(name);
-    const services = await Service.findAll({where:{}})
-   
+    const services = await Service.findAll({ where: {} })
+
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
-    res.render("admin/serviceManagment",{
-        page:"Gestion de servicios",
+    res.render("admin/serviceManagment", {
+        page: "Gestion de servicios",
         services
     })
 }
 
-const formRegister = async(req, res) => {
+const formRegister = async (req, res) => {
     const userToken = req.cookies._token;
     if (!userToken) {
         return res.redirect('/login');
@@ -192,27 +192,76 @@ const formRegister = async(req, res) => {
     const adminData = await User.findOne({ where: { id: userID } })
     const name = adminData.type
     console.log(name);
-   
+
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
     res.render('auth/register')
 }
 
-const editUser = async(req, res) => {
+const editUser = async (req, res) => {
+
+    const userToken = req.cookies._token;
+    if (!userToken) {
+        return res.redirect('/login');
+    }
+
+    const decodedToken = decodeJwt(userToken);
+    const { userID } = decodedToken;
+    const adminData = await User.findOne({ where: { id: userID } })
+    const name = adminData.type
+    console.log(name);
+    const users = await User.findAll({ where: {} })
+
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
+
     const id = req.params.id;
-    const userData = await User.findOne({where:{id}})   
-    res.render('admin/editUser',{
-        userData    
+    const userData = await User.findOne({ where: { id } })
+    res.render('admin/editUser', {
+        userData
     })
 }
 
 const saveUser = async (req, res) => {
     //TODO: Post de actualizar 
+
+    const userToken = req.cookies._token;
+    if (!userToken) {
+        return res.redirect('/login');
+    }
+
+    const decodedToken = decodeJwt(userToken);
+    const { userID } = decodedToken;
+    const adminData = await User.findOne({ where: { id: userID } })
+    const name = adminData.type
+    console.log(name);
+    const users = await User.findAll({ where: {} })
+
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
 }
 
 //TODO: fORMULARIO DE SERVICIOS
-const formService = (req, res ) => {
+const formService = async (req, res) => {
+
+    const userToken = req.cookies._token;
+    if (!userToken) {
+        return res.redirect('/login');
+    }
+
+    const decodedToken = decodeJwt(userToken);
+    const { userID } = decodedToken;
+    const adminData = await User.findOne({ where: { id: userID } })
+    const name = adminData.type
+    console.log(name);
+    const users = await User.findAll({ where: {} })
+
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
     res.render('admin/formService')
 }
 //TODO: VALIDACION DEL FORMULARIO 
@@ -223,21 +272,62 @@ const formService = (req, res ) => {
 
 const deleteUSer = async (req, res) => {
     const id = req.params.id;
-    const userData = await User.findOne(({where: {id}}))
-    if(userData.type =="Administrador"){
+    const userData = await User.findOne(({ where: { id } }))
+    if (userData.type == "Administrador") {
         return res.redirect('/admin-home/usuarios')
     }
 
-    const serviceData = await Service.findAll({where:{userID:id}})
+    const serviceData = await Service.findAll({ where: { userID: id } })
     await Log.create({
-        userId:id,
-        action:"Usuario y servicios ligados eliminados"
+        userId: id,
+        action: "Usuario y servicios ligados eliminados"
     })
     serviceData.userID = null
-    Service.destroy({where:{userID:id}})
-    User.destroy({where:{id}})
-return res.redirect('/admin-home/usuarios')
+    Service.destroy({ where: { userID: id } })
+    User.destroy({ where: { id } })
+    return res.redirect('/admin-home/usuarios')
 }
 
 
-export { adminHome, userControl, serviceControll, formRegister, insertUser, editUser, deleteUSer, formService}
+const formSaveService = async (req, res) => {
+    await check("email").notEmpty().withMessage("El correo es obligatorio").isEmail().withMessage("Ese no es un formato valido").run(req)
+    await check("description").notEmpty().withMessage("La descripcion es obligatoria").run(req)
+    await check("typeService").notEmpty().withMessage("Selecciona almenos uno").run(req)
+    await check("typeDevice").notEmpty().withMessage("Selecciona almenos uno").run(req)
+    await check("status").notEmpty().withMessage("Selecciona almenos uno").run(req)
+    await check("brand").notEmpty().withMessage("LA marca es obligatoria").isLength({ min: 2, max: 50 }).withMessage("Debe tener minimo 2 y maximo 50 caracteres").run(req)
+    await check("model").notEmpty().withMessage("El modelo es obigatorio").isLength({ min: 2, max: 50 }).withMessage("Debe tener minimo 2 y maximo 50 caracteres").run(req)
+    await check("serialNumber").notEmpty().withMessage("EL numero de serie es obligatorio").isLength({ min: 6, max: 20 }).withMessage("Debe tener minimo 6 y maximo 20 caracteres").run(req)
+    const resultValidate = validationResult(req)
+    const data = req.body
+    const { email, description, typeService, typeDevice, status, brand, model, serialNumber } = req.body
+    //res.json(resultValidate)
+    if (resultValidate.isEmpty()) {
+
+        const userData = await User.findOne({ where: { email } })
+        if (!userData) {
+            res.render('admin/formService',{
+                page:"Registro de servicios",
+                errors:[{msg:`El usuario asociado con el correo: ${email} no existe`}],
+                formData:{email, description, typeService, typeDevice, status, brand, model, serialNumber }
+            })
+        }
+        else {
+            const saveDevice = await Device.create({
+                typeDevice, brand, model, serialNumber
+            })
+            const saveService = await Service.create({
+                description, status, typeService, userID: userData.id, deviceID: saveDevice.id
+            })
+            res.redirect('/admin-home/servicios')
+        }
+    }else{
+        res.render('admin/formService',{
+            errors:resultValidate.array(),
+            formData:{email, description, typeService, typeDevice, status, brand, model, serialNumber }
+        })
+    }
+}
+
+
+    export { adminHome, userControl, serviceControll, formRegister, insertUser, editUser, deleteUSer, formService, formSaveService }

@@ -10,8 +10,12 @@ block content
                         path(stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5")
             div(class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start")
                 div( class="flex flex-shrink-0 items-center")
+                
                     img(class="h-10 w-auto" src="/img/Grupo 1.png" alt="SPC company")
+
+                    
                 div(class="hidden sm:ml-6 sm:block space-x-4")
+                
                     a(class="bg-gray-900 text-white rounded-md px-3 py-2 text-base font-medium" href="/admin-home" aria-current="page") Dashboard
                     a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="admin-home/usuarios") Usuarios
                     a(class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" href="admin-home/servicios") Servicios
@@ -51,7 +55,7 @@ block scripts
     script.
         const ctx = document.getElementById('myChart');
         const myChart = new Chart(ctx, {
-        type: 'polarArea',
+        type: 'pie',
         data: {
         labels: ["Laptop", "Desktop","Fotocopiadora", "Multifuncional", "Impresora "],
         datasets: [{
