@@ -1,4 +1,13 @@
 extends ../layout/index 
+block styles  
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/datatables.net-dt/css/jquery.dataTables.min.css") 
+    style.
+        #myTable_info, #myTable_paginate {
+        font-size: 0.75rem;  // Ajusta el tamaño de letra según tus preferencias
+        }
+        .dataTables_filter input {
+             font-size: 0.75rem;  // Ajusta el tamaño de letra del campo de búsqueda
+            }
 block content
     header.bg-gray-800.text-white.p-4
         div.flex.items-center.justify-between
@@ -10,7 +19,7 @@ block content
                 span Bienvenido #{user}
 
     div.relative.overflow-x-auto.py-10
-        table(class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400")
+        table#myTable.table(class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400")
             thead(class="text-xs text-white font-extrabold uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400")
                 tr
                     th(scope="col" class="px-6 py-3")
@@ -40,3 +49,8 @@ block content
                         td(class="px-6 py-4") #{service.tbb_device.model}
                         td(class="px-6 py-4") #{service.status}
                         td(class="px-6 py-4") #{new Date(service.updatedAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
+block scripts
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script(src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js")
+    script(src="/js/pagination.js")                   
+                                    

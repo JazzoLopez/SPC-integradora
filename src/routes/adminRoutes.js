@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteUSer, editUser, formRegister, formService, insertUser, serviceControll, userControl } from "../controllers/adminController.js";
+import { deleteUSer, editUser, formRegister, formSaveService, formService, insertUser, serviceControll, userControl } from "../controllers/adminController.js";
 
 
 const router = express.Router()
@@ -14,6 +14,7 @@ router.get('/servicios/nuevo-servicio', formService)
 
 
 router.post("/usuarios/nuevo-usuario", insertUser)
+router.post('/servicios/nuevo-servicio', formSaveService)
 
 
 
