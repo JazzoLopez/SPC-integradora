@@ -3,6 +3,7 @@ import Service from "../models/Service.js";
 import Device from "../models/Device.js";
 import { check, validationResult } from "express-validator";
 import bcrypt from 'bcrypt';
+import axios from "axios";
 import { generateJwt, generateToken, decodeJwt } from "../libs/token.js";
 import { emailPasswordRecovery } from "../libs/emails.js";
 
@@ -12,11 +13,26 @@ const index = (request, response ) => {
     })
 }
 
-const formLogin = (req, res) => {
+const formLogin =async  (req, res) => {
+
+       
+    
+
     res.render("auth/login",{
         page:"Iniciar sesion"
     })
+    try{
+        const url = 'http://localhost:3000/api'
+        const respuesta = await fetch(url)
+        const usuarios = await respuesta.json()
+        console.log(usuarios)
+    }
+    catch(err){
+        console.log(err)
+    }
+
 }
+
 
 const formPasswordRecovery = (request, response) => {
 
@@ -291,6 +307,8 @@ const updatePassword = async(req ,res) =>{
 
         }))
     }
+
+   
 
 }
 

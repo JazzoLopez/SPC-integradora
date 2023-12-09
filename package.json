@@ -34,6 +34,7 @@
   "homepage": "https://github.com/JazzoLopez/SPC-integradora#readme",
   "dependencies": {
     "autoprefixer": "^10.4.16",
+    "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
     "concurrently": "^8.2.2",
     "cookie-parser": "^1.4.6",

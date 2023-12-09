@@ -9,6 +9,7 @@ import Device from './models/Device.js';
 import router from './routes/userRoutes.js';
 import routerAdmin from './routes/adminRoutes.js';
 import db from './configs/db.js'
+import ApiRouter from './routes/apiRoutes.js';
 dotenv.config({
     path: 'src/.env'
 })
@@ -45,3 +46,4 @@ try{
 
 app.use('/',router)
 app.use('/admin-home', routerAdmin)
+app.use('/api', ApiRouter)

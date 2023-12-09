@@ -6,6 +6,7 @@ import Log from "../models/log.js";
 import { generateJwt, generateToken, decodeJwt } from "../libs/token.js";
 import { emailRegister } from "../libs/emails.js";
 import Device from "../models/Device.js";
+import axios from "axios";
 
 
 
@@ -148,7 +149,9 @@ const userControl = async (req, res) => {
     const adminData = await User.findOne({ where: { id: userID } })
     const name = adminData.type
     console.log(name);
-    const users = await User.findAll({ where: {} })
+ 
+    const response = await axios.get('http://localhost:3000/api/usuarios/getAll');
+    const users = response.data;
 
     if (name !== "Administrador") {
         return res.redirect('/login');
