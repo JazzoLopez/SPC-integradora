@@ -33,11 +33,12 @@ block content
     .bg-white.py-4.px-4.rounded-xl.mx-auto.max-w-6xl.my-10.border.shadow-x1.rounded-lg.border.border-gray-400.shadow-2xl(class="md:px-10")
         div.flex.flex-col(class="sm:flex-row justify-between")
             div(style="width: 100%; sm:width-48%;")
-                p #{saludo}
+                h1 #{mensaje} Son las #{horaActual}
+                br
                 div(class="md:px-10")
                     canvas(id="myChart" width="150" height="120")
             div(style="width: 100%; sm:width-48%; sm:border mt-4")
-            
+                br
                 .bg-gradient-to-br.from-gray-100.to-gray-100.border.p-6.rounded-lg.shadow-lg.text-center.mt-8
                     p(class="text-gray-600 text-lg font-bold mb-2") Promedio de Dispositivos
                     hr(class="w-48 h-1 mx-auto my-4 bg-black border-0 rounded md:my-10 dark:bg-gray-700")

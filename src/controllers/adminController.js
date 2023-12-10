@@ -95,21 +95,7 @@ const adminHome = async (req, res) => {
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
-    function obtenerSaludo() {
-        const horaActual = new Date().getHours();
-        const minutos = new Date().getMinutes()
-        let saludo;
-
-        if (horaActual >= 5 && horaActual < 12) {
-            saludo = 'Buenos días, son las ' + horaActual + " horas con " + minutos + " minutos";
-        } else if (horaActual >= 12 && horaActual < 18) {
-            saludo = 'Buenas tardes, son las ' + horaActual + " horas con " + minutos + "minutos";
-        } else {
-            saludo = 'Buenas noches, son las ' + horaActual + " horas con " + minutos + " minutos";
-        }
-
-        return saludo;
-    }
+   
 
     const device = await Device.findAll({ where: {} })
     const deviceName = device.map(device => device.typeDevice)
@@ -123,11 +109,23 @@ const adminHome = async (req, res) => {
     const Fotocopiadora = await Device.count({ where: { typeDevice: "Fotocopiadora" } })
     const Multifuncional = await Device.count({ where: { typeDevice: "Multifuncional" } })
     const Desktop = await Device.count({ where: { typeDevice: "Desktop" } })
-    const saludo = obtenerSaludo();
+    const response = await fetch('http://worldtimeapi.org/api/ip');
+    const data = await response.json();
 
+    // Formatea la hora a un formato legible
+    const horaActual = new Date(data.utc_datetime).toLocaleTimeString();
+    let mensaje = '';
+    if (horaActual >= 5 && horaActual < 12) {
+      mensaje = '¡Buenos días!';
+    } else if (horaActual >= 12 && horaActual < 18) {
+      mensaje = '¡Buenas tardes!';
+    } else {
+      mensaje = '¡Buenas noches!';
+    }
     res.render('admin/adminHome', {
         page: "Home",
-        saludo,
+        horaActual,
+        mensaje,
         deviceName,
         laptop,
         Impresora,
