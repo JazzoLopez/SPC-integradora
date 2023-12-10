@@ -35,14 +35,14 @@ block content
             div(style="width: 100%; sm:width-48%;")
                 p #{saludo}
                 div(class="md:px-10")
-                    canvas(id="myChart" width="250" height="100")
+                    canvas(id="myChart" width="150" height="120")
             div(style="width: 100%; sm:width-48%; sm:border mt-4")
             
                 .bg-gradient-to-br.from-gray-100.to-gray-100.border.p-6.rounded-lg.shadow-lg.text-center.mt-8
                     p(class="text-gray-600 text-lg font-bold mb-2") Promedio de Dispositivos
                     hr(class="w-48 h-1 mx-auto my-4 bg-black border-0 rounded md:my-10 dark:bg-gray-700")
                     .mt-10.border.border-2xl.border-white.py-8.px-1.rounded-lg.shadow-2xl.text-center.text-gray-600.space-y-2
-                        p(class="text-lg font-semibold") Laptop #{  (laptop * cifras).toFixed(2)}% 
+                        p(class="text-lg font-semibold") Laptop #{  (0 + laptop * cifras).toFixed(2)}% 
                         p(class="text-lg font-semibold") Desk #{(Desktop * cifras).toFixed(2)}% 
                         p(class="text-lg font-semibold") Impresora #{(Impresora * cifras).toFixed(2)}% 
                         p(class="text-lg font-semibold") Multifuncional #{(Multifuncional * cifras).toFixed(2)}% 
@@ -77,13 +77,16 @@ block scripts
           'rgba(153, 102, 255, 1)',
           'rgba(255, 159, 64, 1)'
         ],
-        borderWidth: 1
+        borderWidth: 2
             }]
         },
-     options: {elements: {
-                arc: {
-                    borderColor: '#fff', // Color del borde
-            borderWidth: 2, // Ancho del borde
+            options: {
+                elements: {
+                    arc: {
+                        borderColor: '#fff', // Color del borde
+                        borderWidth: 3,
+                        hoverBackgroundColor: '#FAFAFA'
+                 // Ancho del borde
                 },
             },
         animation:{

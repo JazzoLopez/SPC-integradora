@@ -22,7 +22,7 @@ const users = [{
     lastname: "Marquez Azuara",
     tel: "81 2909 38 76",
     email: "LuisMarquez@gmail.com",
-    password: bcrypt.hashSync('Luis123MA', 10),
+    password: bcrypt.hashSync(' ', 10),
     verified: 1,
     token: null
 },
