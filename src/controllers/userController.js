@@ -60,7 +60,7 @@ const authenticateUser = async (request, response) => {
             console.log("El ususario no existe")
             response.render("auth/login.pug", {
                 page: "Login",
-                errors: [{ msg: `The user associated to: ${email} was not found` }],
+                errors: [{ msg: `El usuario asociado al correo: ${email} no fue encontrado` }],
                 user: {
                     email
                 }
@@ -72,7 +72,7 @@ const authenticateUser = async (request, response) => {
 
                 response.render("auth/login.pug", {
                     page: "Login",
-                    errors: [{ msg: `The user associated to: ${email} was found but not verified` }],
+                    errors: [{ msg: `El  usuario con el correo ${email} aun no esta verificado` }],
                     user: {
                         email
                     }
@@ -81,7 +81,7 @@ const authenticateUser = async (request, response) => {
                 if (!userExists.verifyPassword(password)) {
                     response.render("auth/login.pug", {
                         page: "Login",
-                        errors: [{ msg: `User and password does not match` }],
+                        errors: [{ msg: `EL correo o la contraseña es incorrecto` }],
                         user: {
                             email
                         }

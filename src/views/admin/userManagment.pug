@@ -33,7 +33,7 @@ block content
                 a(class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" href="usuarios"  aria-current="page") Usuarios
                 a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="servicios") Servicios
                 a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="/logout") Cerrar sesion
-    .bg-white.shadow.py-8.px-4.rounded-xl.mx-auto.max-w-full.my-10.text-center.font-extrabold.space-y-5(class="md:px-10 text-lg") 
+    .bg-white.shadow.py-8.px-4.rounded-xl.mx-auto.max-w-full.my-10.text-center.space-y-5(class="md:px-10 text-lg") 
         p Control de usuarios
         div
             a(href="/admin-home/usuarios/nuevo-usuario", class="btnEditar bg-green-400 text-gray-600 px-4 py-2") Registrar nuevo usuario
@@ -69,7 +69,7 @@ block content
                                 td(class="px-6 py-4") #{new Date(user.updatedAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
                                 td(class="px-6 py-4")
                                     a(href=`/admin-home/usuarios/editar/${user.id}`, class="btnEditar bg-amber-500 text-white px-4 py-2") Editar
-                                    a(href=`/admin-home/usuarios/borrar/${user.id}`, class="btnBorrar bg-red-500 text-white px-4 py-2") Borrar
+                                    a(href=`/admin-home/usuarios/eliminar/${user.id}`, class="btnBorrar bg-red-500 text-white px-4 py-2") Borrar
 
 block scripts
     script(src="https://code.jquery.com/jquery-3.6.0.min.js")

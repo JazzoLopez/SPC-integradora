@@ -29,7 +29,7 @@ block content
     h1.text-center.text-4xl.my-10.font-extrabolder(class="text-SPC") SPC 
         span.font-normal.text-black  
     
-    h2.text-center.text-3xl.font-extrabold Nuevo servicio
+    h2.text-center.text-3xl.font-extrabold Editar servicio
 
     if errors 
         div#message.mt-8.mx-auto.max-w-xl(class="text-center time")
@@ -41,52 +41,52 @@ block content
     div.mt-8.mx-auto.max-w-4xl
         .bg-white.py-8.px-4.shadow-x1.rounded-lg.border.border-gray-400.shadow-2xl
             
-            form.space-y-8(action="/admin-home/servicios/nuevo-servicio" method="POST" noValidate)
+            form.space-y-8(action=`/admin-home/servicios/editar/${ServiceData.id}` method="POST" noValidate)
                 .space-y-8
                     h3.text-lg.leading-6.font-md.tex-gray-900.font-bold Datos generales del servicio.
                 div
                     label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="email") Correo del usuario
-                    input#email.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="email" name="email" placeholder="spc@domain.com"  value=formData && formData.email ? formData.email: '')
+                    input#email.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="email" name="email" placeholder="spc@domain.com"  value=userData && userData.email ? userData.email: '')
                     
                 div
                     label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="description") Descripcion:
-                    textarea#description.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="description" placeholder="Detalles acerca del servicio." value=formData && formData.description ? formData.description: '')=formData && formData.description ? formData.description: ''
+                    textarea#description.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="description" placeholder="Detalles acerca del servicio." value=ServiceData && ServiceData.description ? ServiceData.description: '')=ServiceData && ServiceData.description ? ServiceData.description: ''
                 div(class="md:flex md:gap-4") 
                     div(class="md:w-1/3")   
                         label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="typeService")  Tipo de servicio
                         select#typeService.w-full.px-3.py-2.border.border-gray-300.rounded(name="typeService")
                             option(value="" selected) -- SELECCIONA --
-                            option(value="Correctivo" selected=formData && formData.typeService === "Correctivo") Correctivo
-                            option(value="Preventivo" selected=formData && formData.typeService === "Preventivo") Preventivo
+                            option(value="Correctivo" selected=ServiceData && ServiceData.typeService === "Correctivo") Correctivo
+                            option(value="Preventivo" selected=ServiceData && ServiceData.typeService === "Preventivo") Preventivo
 
                     div(class="md:w-1/3")
                         label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="typeDevice") Tipo de dispositivo
                         select#typeDevice.w-full.px-3.py-2.border.border-gray-300.rounded(name="typeDevice")
                             option(value="" selected) -- SELECCIONA --
-                            option(value="Impresora" selected=formData && formData.typeDevice === "Impresora") Impresora
-                            option(value="Fotocopiadora" selected=formData && formData.typeDevice === "Fotocopiadora") Fotocopiadora
-                            option(value="Multifuncional" selected=formData && formData.typeDevice === "Multifuncional") Multifuncional
-                            option(value="Desktpo" selected=formData && formData.typeDevice === "Desktop") Desktop
-                            option(value="Laptop" selected=formData && formData.typeDevice === "Laptop") Laptop
+                            option(value="Impresora" selected=ServiceData.tbb_device && ServiceData.tbb_device.typeDevice === "Impresora") Impresora
+                            option(value="Fotocopiadora" selected=ServiceData.tbb_device && ServiceData.tbb_device.typeDevice === "Fotocopiadora") Fotocopiadora
+                            option(value="Multifuncional" selected=ServiceData.tbb_device && ServiceData.tbb_device.typeDevice === "Multifuncional") Multifuncional
+                            option(value="Desktpo" selected=ServiceData.tbb_device && ServiceData.tbb_device.typeDevice === "Desktop") Desktop
+                            option(value="Laptop" selected=ServiceData.tbb_device && ServiceData.tbb_device.typeDevice === "Laptop") Laptop
                     div(class="md:w-1/3")
                         label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="status") Estatus del servicio
                         select#status.w-full.px-3.py-2.border.border-gray-300.rounded(name="status")
                             option(value="" selected) -- SELECCIONA --
-                            option(value="No iniciado" selected=formData && formData.status === "No iniciado") No iniciado
-                            option(value="En proceso" selected=formData && formData.status === "En proceso") En proceso 
-                            option(value="Finalizado" selected=formData && formData.status === "Finalizado") Finalizado
+                            option(value="No iniciado" selected=ServiceData && ServiceData.status === "No iniciado") No iniciado
+                            option(value="En proceso" selected=ServiceData && ServiceData.status === "En proceso") En proceso 
+                            option(value="Finalizado" selected=ServiceData && ServiceData.status === "Finalizado") Finalizado
 
                 div(class="md:flex md:gap-4") 
                     div(class="md:w-1/3")   
                         label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="brand") Marca
-                        input#brand.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="brand" placeholder="Marca"  value=formData && formData.brand ? formData.brand: '')
+                        input#brand.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="brand" placeholder="Marca"  value=ServiceData.tbb_device && ServiceData.tbb_device.brand ? ServiceData.tbb_device.brand: '')
                                      
                     div(class="md:w-1/3")
                         label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="nwc") Modelo
-                        input#model.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="model" placeholder="Modelo"  value=formData && formData.model ? formData.model: '')
+                        input#model.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="model" placeholder="Modelo"  value=ServiceData.tbb_device && ServiceData.tbb_device.model ? ServiceData.tbb_device.model: '')
 
                     div(class="md:w-1/3")
                         label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="serialNumber") Numero de serie
-                        input#serialNumber.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="serialNumber" placeholder="N.serial"  value=formData && formData.serialNumber ? formData.serialNumber: '')
-                input#btn-login.w-full.bg-white.text-black.border.border-black(class="text-black font-bold py-3 cursor-pointer rounded-lg hover:bg-gray-800 hover:text-white" type="submit" value="Guardar servicio")
+                        input#serialNumber.w-full.px-3.py-2.border-gray-300.rounded-md.placeholder-gray-400(type="text" name="serialNumber" placeholder="N.serial"  value=ServiceData.tbb_device && ServiceData.tbb_device.serialNumber ? ServiceData.tbb_device.serialNumber: '')
+                input#btn-login.w-full.bg-white.text-black.border.border-black(class="text-black font-bold py-3 cursor-pointer rounded-lg hover:bg-gray-800 hover:text-white" type="submit" value="Actualizar")
             

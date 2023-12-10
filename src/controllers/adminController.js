@@ -4,7 +4,7 @@ import { check, validationResult } from "express-validator";
 import bcrypt from 'bcrypt';
 import Log from "../models/log.js";
 import { generateJwt, generateToken, decodeJwt } from "../libs/token.js";
-import { emailRegister } from "../libs/emails.js";
+import { emailChangeFinal, emailChangeStatus, emailRegister } from "../libs/emails.js";
 import Device from "../models/Device.js";
 import axios from "axios";
 
@@ -297,7 +297,6 @@ else{
 
 }
 
-//TODO: fORMULARIO DE SERVICIOS
 const formService = async (req, res) => {
 
     const userToken = req.cookies._token;
@@ -319,13 +318,27 @@ const formService = async (req, res) => {
         page: "Registro de servicios"
     })
 }
-//TODO: VALIDACION DEL FORMULARIO 
-//TODO: INSERSION A LA BD
 
 
 
 
 const deleteUSer = async (req, res) => {
+    const userToken = req.cookies._token;
+    if (!userToken) {
+        return res.redirect('/login');
+    }
+
+    const decodedToken = decodeJwt(userToken);
+    const { userID } = decodedToken;
+    const adminData = await User.findOne({ where: { id: userID } })
+    const name = adminData.type
+    console.log(name);
+    const users = await User.findAll({ where: {} })
+
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
+
     const id = req.params.id;
     const userData = await User.findOne(({ where: { id } }))
     if (userData.type == "Administrador") {
@@ -343,8 +356,47 @@ const deleteUSer = async (req, res) => {
     return res.redirect('/admin-home/usuarios')
 }
 
+const deleteService = async (req, res) => {
+    const userToken = req.cookies._token;
+    if (!userToken) {
+        return res.redirect('/login');
+    }
+
+    const decodedToken = decodeJwt(userToken);
+    const { userID } = decodedToken;
+    const adminData = await User.findOne({ where: { id: userID } })
+    const name = adminData.type
+    console.log(name);
+    const users = await User.findAll({ where: {} })
+
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
+
+    const id = req.params.id
+    Service.destroy({ where: { id } })
+    res.redirect('/admin-home/servicios')
+
+}   
+
 
 const formSaveService = async (req, res) => {
+    const userToken = req.cookies._token;
+    if (!userToken) {
+        return res.redirect('/login');
+    }
+
+    const decodedToken = decodeJwt(userToken);
+    const { userID } = decodedToken;
+    const adminData = await User.findOne({ where: { id: userID } })
+    const name = adminData.type
+    console.log(name);
+    const users = await User.findAll({ where: {} })
+
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
+
     await check("email").notEmpty().withMessage("El correo es obligatorio").isEmail().withMessage("Ese no es un formato valido").run(req)
     await check("description").notEmpty().withMessage("La descripcion es obligatoria").run(req)
     await check("typeService").notEmpty().withMessage("Selecciona almenos uno").run(req)
@@ -385,5 +437,119 @@ const formSaveService = async (req, res) => {
     }
 }
 
+const updateService = async(req, res) => {
+    const id = req.params.id
+    const ServiceData = await Service.findOne({where:{id}, include:{model:Device}})
+    const {userID} = ServiceData
+    const userData = await User.findOne({where:{id:userID}})
+    res.render('admin/editService',{
+    page:"Editar servicio",
+    ServiceData,
+    userData
+        })
+}
 
-    export { adminHome, userControl, serviceControll, formRegister, insertUser, editUser, deleteUSer, formService, formSaveService, saveUser }
+const saveService = async (req, res) => {
+    const userToken = req.cookies._token;
+    if (!userToken) {
+        return res.redirect('/login');
+    }
+
+    const decodedToken = decodeJwt(userToken);
+    const { userID } = decodedToken;
+    const adminData = await User.findOne({ where: { id: userID } })
+    const name = adminData.type
+    console.log(name);
+    const users = await User.findAll({ where: {} })
+
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
+
+    await check("email").notEmpty().withMessage("El correo es obligatorio").isEmail().withMessage("Ese no es un formato valido").run(req)
+    await check("description").notEmpty().withMessage("La descripcion es obligatoria").run(req)
+    await check("typeService").notEmpty().withMessage("Selecciona almenos uno").run(req)
+    await check("typeDevice").notEmpty().withMessage("Selecciona almenos uno").run(req)
+    await check("status").notEmpty().withMessage("Selecciona almenos uno").run(req)
+    await check("brand").notEmpty().withMessage("LA marca es obligatoria").isLength({ min: 2, max: 50 }).withMessage("Debe tener minimo 2 y maximo 50 caracteres").run(req)
+    await check("model").notEmpty().withMessage("El modelo es obigatorio").isLength({ min: 2, max: 50 }).withMessage("Debe tener minimo 2 y maximo 50 caracteres").run(req)
+    await check("serialNumber").notEmpty().withMessage("EL numero de serie es obligatorio").isLength({ min: 6, max: 20 }).withMessage("Debe tener minimo 6 y maximo 20 caracteres").run(req)
+    const resultValidate = validationResult(req)
+    const data = req.body
+    const { email, description, typeService, typeDevice, status, brand, model, serialNumber } = req.body
+
+    if (resultValidate.isEmpty()) {
+
+        const userData = await User.findOne({ where: { email } })
+        if (!userData) {
+            res.render('admin/editService',{
+                page:"Editar servicio",
+                errors:[{msg:`El usuario asociado con el correo: ${email} no existe`}],
+                userData:email,
+                ServiceData:{
+                    id:req.params.id,
+                    description,
+                    typeService,
+                    status,
+                    description,
+                    tbb_device:{
+                        brand,
+                        model,
+                        serialNumber,
+                        typeDevice
+                    }}
+            })
+        }
+        else {
+            
+            console.log(email)
+        
+            const id = req.params.id
+            console.log(id)
+            const dataService = await Service.findOne({where:{id}})
+
+            dataService.description = description
+            dataService.status = status
+            dataService.typeService = typeService
+            dataService.userID = userData.id
+            dataService.save();
+            
+            const dataDevice = await Device.findOne({where:{id:dataService.deviceID}})
+            dataDevice.brand = brand;
+            dataDevice.model = model;
+            dataDevice.serialNumber = serialNumber
+            dataDevice.typeDevice = typeDevice
+            dataDevice.save();
+
+            if(dataService.status == "En proceso"){
+                emailChangeStatus({email, status});
+            }else if(dataService.status == "Finalizado"){
+                emailChangeFinal( {email, status});
+            }
+    
+            res.redirect('/admin-home/servicios')
+        }
+    }else{
+        res.render('admin/editService',{
+            page: "Editar servicio",
+            errors:resultValidate.array(),
+            userData:{email},
+                ServiceData:{
+                    id:req.params.id,
+                    description,
+                    typeService,
+                    status,
+                    description,
+                    tbb_device:{
+                        brand,
+                        model,
+                        serialNumber,
+                        typeDevice
+                    }}
+        })
+    }
+}
+
+
+
+    export {saveService, updateService, adminHome, userControl, serviceControll, formRegister, insertUser, editUser, deleteUSer, deleteService,formService, formSaveService, saveUser }
