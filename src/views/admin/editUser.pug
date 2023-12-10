@@ -40,7 +40,7 @@ block content
                     p.bg-red-600.text-white.uppercase.text-xs.text-center.p-2.mb-1.font-bold= error.msg
     div.mt-8.mx-auto.max-w-xl
         .bg-white.py-8.px-4.shadow-x1.rounded-lg.border.border-gray-400.shadow-2xl
-            form.space-y-5(action=`/admin-home/usuarios/nuevo-usuario/editar/${userData.id}` method="POST" noValidate)
+            form.space-y-5(action=`/admin-home/usuarios/editar/${userData.id}` method="POST" noValidate)
                 div.mb-4
                     label.block.text-sm.uppercase.text-gray-700.font-bold(for="name") Nombre: 
                     input#name.w-full.px-3.py-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="Nombre" name="name" value=userData && userData.name ? userData.name: '')
@@ -54,7 +54,11 @@ block content
                 div.mb-4
                     label.block.text-sm.uppercase.text-gray-700.font-bold(for="email") Correo electronico: 
                     input#email.w-full.px-3.py-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="spc@email.com" name="email" type="email" value=userData && userData.email ? userData.email: '')
-                    
+                div.mb-4
+                    label.block.text-sm.uppercase.text-gray-600.mb-3.font-bold(for="type")  Tipo de usuario
+                        select#type.w-full.px-3.py-2.border.border-gray-300.rounded(name="type")
+                            option(value="Usuario" selected=userData && userData.type === "Usuario") Usuario
+                            option(value="Administrador" selected=userData && userData.type === "Administrador") Administrador 
                 div.mb-4
                     label.block.text-sm.uppercase.text-gray-700.font-bold(for="password") Contraseña:
                     input#password.w-full.px-3.py-2.border.border-gray-300.rounded-sm.placeholder-gray-400(placeholder="*******" name="password" type="password")

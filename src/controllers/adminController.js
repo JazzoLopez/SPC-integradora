@@ -9,21 +9,16 @@ import Device from "../models/Device.js";
 import axios from "axios";
 
 
-
 const insertUser = async (req, res) => {
 
-
-    console.log(`Nombre: ${req.body.name}`);
-    //*Validando
     await check("name").notEmpty().withMessage("El nombre es obligatorii").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("lastname").notEmpty().withMessage("Los apellidos son obligatorios").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("tel").notEmpty().withMessage("El numero telefonico es obligatorio").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("email").notEmpty().withMessage("El correo es obligatorio").isEmail().withMessage("Ese no es un formato valido").run(req)
     await check("password").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8, max: 20 }).withMessage("La contraseña debe de ser de almenos 8 caracteres").run(req)
     await check("repeatPassword").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8, max: 20 }).withMessage("La contraseña debe de ser de almenos 8 caracteres").equals(req.body.password).withMessage("Las contraseñas no son iguales").run(req)
-    //res.json(validationResult(req));//*PARA VER EL JSON
-    console.log(`El total de errores fueron de: ${validationResult.length} errores de validación`)
-
+    //res.json(validationResult(req));
+    
     let resultValidate = validationResult(req);
     const userExists = await User.findOne({
         where: {
@@ -49,17 +44,21 @@ const insertUser = async (req, res) => {
     }
     else if (resultValidate.isEmpty()) {
         const token = generateToken();
-        //*Creando usuario */
 
         let newUser = await User.create({
             name, lastname, tel, email, password, token
         });
+
+        const logs = await Log.create(
+            {userId:newUser.id,
+            action:`Se actualizaron los datos del usuario con el id ${newUser.id}`}
+        )
         res.render("templates/message.pug", {
            page:"Registro de usuarios",
             message: email,
             type: "success"
 
-        }) //* Esta linea es la que inserta
+        })
 
         emailRegister({ email, name, token });
 
@@ -224,11 +223,16 @@ const editUser = async (req, res) => {
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
-
+    
     const id = req.params.id;
-    const userData = await User.findOne({ where: { id } })
+    const userData = await User.findOne(({ where: { id } }))
+    if (userData.id == 1) {
+        return res.redirect('/admin-home/usuarios')
+    }
+
     res.render('admin/editUser', {
-        userData
+        userData,
+        page:"Editar usuario"
     })
 }
 
@@ -243,13 +247,54 @@ const saveUser = async (req, res) => {
     const decodedToken = decodeJwt(userToken);
     const { userID } = decodedToken;
     const adminData = await User.findOne({ where: { id: userID } })
-    const name = adminData.type
-    console.log(name);
     const users = await User.findAll({ where: {} })
 
-    if (name !== "Administrador") {
+    if (adminData.name !== "Administrador" && adminData.id !== 1) {
         return res.redirect('/login');
     }
+    
+    await check("name").notEmpty().withMessage("El nombre es obligatorii").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
+    await check("lastname").notEmpty().withMessage("Los apellidos son obligatorios").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
+    await check("tel").notEmpty().withMessage("El numero telefonico es obligatorio").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
+    await check("email").notEmpty().withMessage("El correo es obligatorio").isEmail().withMessage("Ese no es un formato valido").run(req)
+    await check("password").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8, max: 20 }).withMessage("La contraseña debe de ser de almenos 8 caracteres").run(req)
+    await check("repeatPassword").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8, max: 20 }).withMessage("La contraseña debe de ser de almenos 8 caracteres").equals(req.body.password).withMessage("Las contraseñas no son iguales").run(req)
+    await check("type").notEmpty().withMessage("Selecciona almenos uno").run(req)
+const resultValidate = validationResult(req)
+const data = req.body
+const {name, tel, lastname, email, password, repeatPassword, type} = data
+    if (resultValidate.isEmpty()) {
+        const user = await User.findOne({where:{email}})
+        user.name = name
+        user.tel = tel
+        user.email = email
+        user.password = repeatPassword,
+        user.type = type
+        user.lastname = lastname
+        user.save()
+        console.log("Ususario actualizado satisfactoriamente")
+        const logs = await Log.create(
+            {userId:user.id,
+            action:`Se actualizaron los datos del usuario con el id ${user.id}`}
+        )
+        res.redirect("/admin-home/usuarios")
+}
+else{
+    res.render("admin/editUser", ({
+        page:"Editar usuario",
+        errors: resultValidate.array(), 
+        user: {
+            name: req.body.name,
+            email: req.body.email,
+            tel: req.body.tel
+        },
+        userData:{
+            name, tel, lastname, email, password, repeatPassword, type
+        }
+
+    }))
+}
+
 }
 
 //TODO: fORMULARIO DE SERVICIOS
@@ -341,4 +386,4 @@ const formSaveService = async (req, res) => {
 }
 
 
-    export { adminHome, userControl, serviceControll, formRegister, insertUser, editUser, deleteUSer, formService, formSaveService }
+    export { adminHome, userControl, serviceControll, formRegister, insertUser, editUser, deleteUSer, formService, formSaveService, saveUser }

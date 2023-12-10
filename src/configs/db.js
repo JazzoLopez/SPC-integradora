@@ -9,7 +9,7 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
   port: process.env.DB_PORT,
   dialect: "mysql",
   define: {
-    timestamps: true, // Debe ser "timestamps", no "Timestamps"
+    timestamps: true, 
   },
   pool: {
     max: 5,
@@ -17,7 +17,7 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
     acquire: 30000,
     idle: 10000,
   },
-  // operatorsAliases se eliminó en Sequelize v4
+
 });
 
 export default db;
