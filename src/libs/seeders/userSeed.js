@@ -1,49 +1,40 @@
 import bcrypt from 'bcrypt'
 const users = [{
-    name: "Jazziel",
-    lastname: "Rodriguez Lopez",
+    name: "SPC",
+    lastname: "Corporacion",
     tel: "7641106843",
-    email: "jazzo@lopez.com",
+    email: "SPC@corporacion.org",
     type:'Administrador',
-    password: bcrypt.hashSync('11111111', 10),
+    password: bcrypt.hashSync('Relojdearena1', 10),
     verified: 1,
     token: null 
 },{
-    name: "Pedro",
-    lastname: "Santos Guerrero",
+    name: "Jazziel",
+    lastname: "Rodriguez Lopez",
     tel: "6677339120",
-    email: "pedro@gmail.com",
-    password: bcrypt.hashSync('11111111', 10),
+    email: "jazzielLopez@gmail.com",
+    password: bcrypt.hashSync('Gatotocapi4no', 10),
     verified: 1,
     token: null
 },
 {
-    name: "Jesus",
-    lastname: "Arroyo Rangel",
-    tel: "9876543210",
-    email: "jesusA@gmail.com",
-    password: bcrypt.hashSync('11111111', 10),
+    name: "Luis Ivan",
+    lastname: "Marquez Azuara",
+    tel: "81 2909 38 76",
+    email: "LuisMarquez@gmail.com",
+    password: bcrypt.hashSync('Luis123MA', 10),
     verified: 1,
     token: null
 },
 {
-    name: "Brayan",
-    lastname: "Bernabe Garcia",
-    tel: "8763829126",
-    email: "brayan@gmail.com",
-    password: bcrypt.hashSync('11111111', 10),
+    name: "Juan Alberto",
+    lastname: "Vazquez Hernandez",
+    tel: "764 119 25 20",
+    email: "JuanVazquez@gmail.com",
+    password: bcrypt.hashSync('Juan123VE', 10),
     verified: 1,
     token: null
-},
-{
-    name: "Octavio",
-    lastname: "Lopez Martinez",
-    tel: "9933994483",
-    email: "OctavioLM@gmail.com",
-    password: bcrypt.hashSync('11111111', 10),
-    verified: 1,
-    token: null
-},
+}
 ]
 
 
