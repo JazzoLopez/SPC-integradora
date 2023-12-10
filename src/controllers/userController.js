@@ -142,14 +142,23 @@ const userHome = async (req, res) => {
     if (userData.type !== "Usuario") {
         return res.redirect('login');
     }
-//Include es como un join conectando con su llave foranea
+
     const servicesData = await Service.findAll({ where: { userID }, include:Device /*Incluye los datos del dispositivo relacionados*/ });
-//imprimo en json para ver la jerarquia del objeto
-//res.json(serviceData)
+    const response = await axios.get('https://theaudiodb.com/api/v1/json/2/discography.php?s=coldplay');
+    const discografia = response.data;
+
+        // Acceder a strAlbum del primer álbum en la lista
+
+        const numeroAleatorio = Math.floor(Math.random() * 9) + 1;
+
+        console.log(numeroAleatorio);
+
+        const albumName = discografia.album[numeroAleatorio].strAlbum;
+    
     res.render('user/userhome', {
         user: userData.name,
         servicesData,
-      
+        albumName
     });
 };
 
@@ -205,10 +214,10 @@ const formPasswordUpdate = async (request, response) => {
     console.log(user);
     if (!user) {
         response.render('auth/confirm-account', {
-            page: 'password recovery',
+            page: 'Cambio de contraseña',
             error: true,
-            msg: 'We have found some issues and could not verify your account.',
-            button: 'Access denied'
+            msg: 'Hemos encontrado detalles y no podemos hacer la accion que deseas.',
+            button: 'Regresar al login'
 
         })
     }
@@ -221,7 +230,7 @@ const formPasswordUpdate = async (request, response) => {
 
 const emailChangePassword = async (req, res) => {
     console.log(`El usuario ha solicitado cambiar su contraseña por lo que se le enviara un correo electronico a ${req.body.email} con la liga para actualizar su contraseña.`)
-    await check("email").notEmpty().withMessage("YOUR EMAIL IS REQUIRED").isEmail().withMessage("THIS IS NOT EMAIL FORMAT").run(req);
+    await check("email").notEmpty().withMessage("El email es obligatorio").isEmail().withMessage("Eso no es un formato valido").run(req);
     let resultValidate = validationResult(req);
     const { name, email } = req.body;
 
@@ -235,9 +244,9 @@ const emailChangePassword = async (req, res) => {
         if (!userExists) { //Si no existe
             console.log(`El usuario: ${email} que esta intentando recuperar su contraseña no existe`);
             res.render("templates/message.pug", {
-                page: "User not found",
-                part1: `The user associated with: `,
-                part2: ` does not exist in database.`,
+                page: "Usuario no encontrado",
+                part1: `El usuario con la cuneta asociada a: `,
+                part2: ` No existe en nuestra base de datos.`,
                 message: `${email}`,
                 type: "error"
 
@@ -254,7 +263,7 @@ const emailChangePassword = async (req, res) => {
             emailPasswordRecovery({ name: userExists.name, email: userExists.email, token: userExists.token })
 
             res.render('templates/message', {
-                page: 'Email Send',
+                page: 'Correo enviado',
                 message: `${email}`,
                 type: "password"
 
@@ -265,9 +274,9 @@ const emailChangePassword = async (req, res) => {
     }
     else {
         res.render('auth/recovery', {
-            page: 'Status verification.',
+            page: 'Verificacion de cuenta.',
             error: false,
-            msg: 'Your account has been confirmed successfuly.',
+            msg: 'Tu cuenta se ha confirmado correctamente.',
             button: 'Now you can login',
             errors: resultValidate.array(), user: {
                 name: req.body.name,
@@ -281,8 +290,8 @@ const emailChangePassword = async (req, res) => {
 const updatePassword = async(req ,res) =>{
     console.log(`Guardando password`);
 
-    await check("password").notEmpty().withMessage("YOUR PASSWORD IS REQUIRED").isLength({ min: 8 }).withMessage("YOUR PASSWORD MUST HAVE 8 CHARACTERS AT LEAST").run(req)
-    await check("confirmPassword").notEmpty().withMessage("YOUR PASSWORD IS REQUIRED").isLength({ min: 8 }).withMessage("YOUR PASSWORD MUST HAVE 8 CHARACTERS AT LEAST").equals(req.body.password).withMessage("BOTH PASSWORDS FIELDS MUST BE THE SAME").run(req)
+    await check("password").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8 }).withMessage("La contraseña almenos tiene 8 caracteres").run(req)
+    await check("confirmPassword").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8 }).withMessage("La contraseña almenos tiene 8 caracteres").equals(req.body.password).withMessage("Ambas contraseñas deben ser las mismas").run(req)
     let resultValidate = validationResult(req);
     if (resultValidate.isEmpty()) {
         const { token } = req.params
@@ -294,15 +303,15 @@ const updatePassword = async(req ,res) =>{
         user.token = null;
         await user.save();
         res.render('auth/confirm-account.pug', {
-            page: "Password recovery",
-            button: "Back to login",
-            msg: "The password has been change succesfully"
+            page: "Cambio de contraseña",
+            button: "Regresa al login",
+            msg: "La contraseña se ha cambiado satisfactoriamente."
         })
     }
 
     else {
         res.render("auth/password-update.pug", ({
-            page: "New account",
+            page: "Cambio de contraseña",
             errors: resultValidate.array()
 
         }))

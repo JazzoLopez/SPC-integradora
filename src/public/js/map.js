@@ -10,13 +10,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/lib/map.js":
-/*!************************!*\
-  !*** ./src/lib/map.js ***!
-  \************************/
+/***/ "./src/libs/map.js":
+/*!*************************!*\
+  !*** ./src/libs/map.js ***!
+  \*************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n//Auntoinvocacion\r\n(function () {\r\n    const lat = 20.2657025;\r\n    const lng = -97.9635447;\r\n    const map = L.map('map').setView([lat, lng], 16);\r\n    let marker\r\n    const geocoderService = L.esri.Geocoding.geocodeService();\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(map);  \r\n\r\n    marker = new L.marker([lat, lng], {\r\n        draggable: true, //Puedes mover\r\n        autoPan: true,\r\n    }).addTo(map);\r\n\r\n\r\n    marker.on('moveend', function (e) { //Este es escuchador\r\n        marker = e.target\r\n        const position = marker.getLatLng()\r\n        console.log(`El usuario solto el marcador en las coordenadas:${position.lat}, ${position.lng}`)\r\n        map.panTo(new L.LatLng(position.lat, position.lng))\r\n\r\n        //TODO: OBTENER LA INFROMACION DE LA DIRECCION FISICA\r\n        geocoderService.reverse().latlng(position, 13).run(function (error, result) {\r\n            console.log(`La informacion calculada por geocoder al intentar hacer la georeferencia inversa es:${result}`)\r\n            console.log(result)\r\n\r\n            marker.bindPopup(result.address.LongLabel)\r\n            document.querySelector('.street').textContent = result.address?.Address ?? '';\r\n            document.querySelector('#street').value = result.address?.Address ?? '';\r\n            document.querySelector('#lat').value = result.address?.latlng?.lat ?? '';\r\n            document.querySelector('#lng').value = result.address?.latlng?.lng ?? '';\r\n\r\n        })\r\n    })\r\n})();\r\n\r\n\n\n//# sourceURL=webpack://spc.awos.integradora.luis.juan.jazziel/./src/lib/map.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n(function () {\r\n    const lat = 20.265807663544592 ;\r\n    const lng = -97.96311110164913;\r\n    const map = L.map('map').setView([lat, lng], 22);\r\n    var greenIcon = L.icon({\r\n        iconUrl: \"assets/Grupo 1.jpg\",\r\n    \r\n        iconSize:     [55, 55], // size of the icon\r\n    // point of the icon which will correspond to marker's location\r\n        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor\r\n    });\r\n    let marker\r\n    const geocoderService = L.esri.Geocoding.geocodeService();\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(map);\r\n\r\n    marker = new L.marker([lat, lng], {\r\n        draggable: true, //Puedes mover\r\n        autoPan: true,\r\n        icon: greenIcon,\r\n    }).addTo(map);\r\nº\r\n   \r\n    \r\n    marker.on('moveend', function (e) { //Este es escuchador\r\n        marker = e.target\r\n        const position = marker.getLatLng()\r\n\r\n        map.panTo(new L.LatLng(position.lat, position.lng))\r\n\r\n        //: OBTENER LA INFROMACION DE LA DIRECCION FISICA\r\n        geocoderService.reverse().latlng(position, 13).run(function (error, result) {\r\n\r\n\r\n            marker.bindPopup(result.address.LongLabel)\r\n\r\n\r\n        })\r\n    })\r\n})();\n\n//# sourceURL=webpack://spc-integradora/./src/libs/map.js?");
 
 /***/ })
 
@@ -43,7 +43,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n//Auntoinvocacion\r\n(functio
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
 /******/ 	var __webpack_exports__ = {};
-/******/ 	__webpack_modules__["./src/lib/map.js"](0, __webpack_exports__, __webpack_require__);
+/******/ 	__webpack_modules__["./src/libs/map.js"](0, __webpack_exports__, __webpack_require__);
 /******/ 	
 /******/ })()
 ;

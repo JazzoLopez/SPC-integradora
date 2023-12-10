@@ -88,7 +88,7 @@ html(lang="en")
         footer 
             .footer-container
                 .map-container 
-                    #map.h-96
+                    #map(style="width: 100%; height:100% background-color:black")
                 .form-container 
                     h2.h2-footer Contactanos
                     form(action="./" method="POST" name="form-footer" class="form-footer" target="_parent")
@@ -96,7 +96,7 @@ html(lang="en")
                         input(type="text" name="name" id="name")
                         br
                         label(for="mail") Email
-                        imput(type="Email" name="mail" id="mail")
+                        imput(type="Email" name="mail" id="mail" value="spc@domain.com")
                         br
                         label(for="phone") Asunto
                         imput(type="tel" name="phone" id="phone")

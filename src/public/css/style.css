@@ -208,14 +208,17 @@ input[type=button]:hover{
 
 /*------------------------------Footer-----------------------------*/
 .footer-container{
-    
+    background-color: var(--bg);
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     width: 100%;
    
 }
-
+.map-container{
+    width: 50%; 
+    padding: 20px;
+}
 .h2-footer{
     font-size: 2.0em;
     font-family: var(--hs);
@@ -289,7 +292,9 @@ header{
 .info-img{
     width: 250px;
 }
-
+.map-container{
+    width: 90%;
+}
 .form-container{
     width: 90%;
 }

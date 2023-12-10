@@ -36,11 +36,12 @@ const insertUser = async (req, res) => {
     if (userExists) {
 
         res.render("auth/register.pug", ({
-            page: "New account",
+            page:"Registro de usuarios",
             errors: [{ msg: `El usuario ${req.body.email} ya existe` }],
             user: {
                 name: req.body.name,
-                email: req.body.email
+                email: req.body.email,
+                tel:req.body.tel
             },
 
 
@@ -54,7 +55,7 @@ const insertUser = async (req, res) => {
             name, lastname, tel, email, password, token
         });
         res.render("templates/message.pug", {
-            page: "Cuenta creada satisfactoriamente",
+           page:"Registro de usuarios",
             message: email,
             type: "success"
 
@@ -66,10 +67,11 @@ const insertUser = async (req, res) => {
 
     else {
         res.render("auth/register.pug", ({
-            page: "Nueva cuenta",
+            page:"Registro de usuarios",
             errors: resultValidate.array(), user: {
                 name: req.body.name,
-                email: req.body.email
+                email: req.body.email,
+                tel: req.body.tel
             },
 
         }))
@@ -148,14 +150,15 @@ const userControl = async (req, res) => {
     const { userID } = decodedToken;
     const adminData = await User.findOne({ where: { id: userID } })
     const name = adminData.type
+    if (name !== "Administrador") {
+        return res.redirect('/login');
+    }
     console.log(name);
  
     const response = await axios.get('http://localhost:3000/api/usuarios/getAll');
     const users = response.data;
 
-    if (name !== "Administrador") {
-        return res.redirect('/login');
-    }
+    
     res.render("admin/userManagment", {
         page: "Gestion de usuarios",
         users
@@ -199,7 +202,9 @@ const formRegister = async (req, res) => {
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
-    res.render('auth/register')
+    res.render('auth/register',{
+        page: "Registro de usuario"
+    })
 }
 
 const editUser = async (req, res) => {
@@ -265,7 +270,9 @@ const formService = async (req, res) => {
     if (name !== "Administrador") {
         return res.redirect('/login');
     }
-    res.render('admin/formService')
+    res.render('admin/formService',{
+        page: "Registro de servicios"
+    })
 }
 //TODO: VALIDACION DEL FORMULARIO 
 //TODO: INSERSION A LA BD
@@ -326,6 +333,7 @@ const formSaveService = async (req, res) => {
         }
     }else{
         res.render('admin/formService',{
+            page: "Registro de servicios",
             errors:resultValidate.array(),
             formData:{email, description, typeService, typeDevice, status, brand, model, serialNumber }
         })
