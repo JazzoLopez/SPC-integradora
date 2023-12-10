@@ -175,7 +175,7 @@ const serviceControll = async (req, res) => {
     const adminData = await User.findOne({ where: { id: userID } })
     const name = adminData.type
     console.log(name);
-    const services = await Service.findAll({ where: {} })
+    const services = await Service.findAll({ where: {},include:{model:Device} })
 
     if (name !== "Administrador") {
         return res.redirect('/login');

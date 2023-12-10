@@ -33,13 +33,13 @@ block content
                 a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="usuarios") Usuarios
                 a(class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" href="servicios" aria-current="page") Servicios
                 a(class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" href="/logout") Cerrar sesion
-    .bg-white.shadow.py-8.px-4.rounded-xl.mx-auto.max-w-full.my-10.text-center.font-extrabold.space-y-5(class="md:px-10 text-lg") 
+    .bg-white.shadow.py-8.px-4.rounded-xl.mx-auto.max-w-full.my-10.text-center.space-y-5(class="md:px-10 text-lg") 
         p Control de servicios
         div
             a(href="/admin-home/servicios/nuevo-servicio", class="btnEditar bg-green-400 text-gray-600 px-4 py-2") Registrar nuevo servicio
             div.relative.overflow-x-auto.py-10.text-xs
-                table#myTable.table(class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400")
-                    thead(class="text-xs text-white font-extrabold uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400")
+                table#myTable.table(class="w-full text-xs text-center rtl:text-right text-gray-500 dark:text-gray-400")
+                    thead(class="text-xs text-white uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400")
                         tr
                             th(scope="col" class="px-6 py-3")
                                 | ID
@@ -49,6 +49,14 @@ block content
                                 | Estatus 
                             th(scope="col" class="px-6 py-3")
                                 | Tipo de servicio
+                            th(scope="col" class="px-6 py-3")
+                                | Tipo de dispositivo
+                            th(scope="col" class="px-6 py-3")
+                                | Marca 
+                            th(scope="col" class="px-6 py-3")
+                                | Modelo
+                            th(scope="col" class="px-6 py-3")
+                                | N.serie
                             th(scope="col" class="px-6 py-3")
                                 | Modificacion
                             th(scope="col" class="px-6 py-3")
@@ -60,6 +68,10 @@ block content
                                 td(class="px-6 py-4") #{service.description}
                                 td(class="px-6 py-4") #{service.status}
                                 td(class="px-6 py-4") #{service.typeService}
+                                td(class="px-6 py-4") #{service.tbb_device.typeDevice}
+                                td(class="px-6 py-4") #{service.tbb_device.brand}
+                                td(class="px-6 py-4") #{service.tbb_device.model}
+                                td(class="px-6 py-4") #{service.tbb_device.serialNumber}
                                 td(class="px-6 py-4") #{new Date(service.updatedAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
                                 td(class="px-6 py-4")
                                     a(href=`servicios/editar/${service.id}`, class="btnEditar bg-amber-500 text-white px-4 py-2") Editar
