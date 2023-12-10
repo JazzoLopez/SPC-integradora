@@ -20,8 +20,7 @@
         autoPan: true,
         icon: greenIcon,
     }).addTo(map);
-º
-   
+
     
     marker.on('moveend', function (e) { //Este es escuchador
         marker = e.target

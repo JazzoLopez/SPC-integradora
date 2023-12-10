@@ -5,6 +5,7 @@ import User from './models/User.js';
 import Log from './models/log.js';
 import Service from './models/Device.js';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import Device from './models/Device.js';
 import router from './routes/userRoutes.js';
 import routerAdmin from './routes/adminRoutes.js';
@@ -25,6 +26,20 @@ app.use(cookieParser());
 app.set('view engine', 'pug');
 app.set('views', './src/views');
 app.use(express.static('./src/public'));
+
+app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", 'https://unpkg.com', 'https://cloudflare.com', 'https://cdnjs.cloudflare.com', 'fonts.googleapis.com','https://cdn.jsdelivr.net/npm/datatables.net-dt/css/jquery.dataTables.min.css', "'unsafe-inline'"],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+        scriptSrc: ["'self'", 'https://unpkg.com', 'https://cdnjs.cloudflare.com','https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js', 'https://cdn.jsdelivr.net/npm/chart.js','https://code.jquery.com',"'unsafe-inline'", "'unsafe-eval'"],
+        imgSrc: ["'self'", 'data:', 'https://a.tile.openstreetmap.org', 'https://b.tile.openstreetmap.org', 'https://c.tile.openstreetmap.org'],
+      },
+    },
+  }));
+  
+
 
 app.listen(process.env.SERVER_PORT, (request, response) => {
     console.log(`EL servicio HTTP ha sido iniciado... \n  El servicio esta escuchando por el puerto: ${process.env.SERVER_PORT}`)

@@ -16,7 +16,7 @@
             if (window.innerWidth <= 640) {
                 welcomeMessage.style.display = 'none';
             } else {
-                welcomeMessage.style.display = 'block';
+
             }
         }
     
