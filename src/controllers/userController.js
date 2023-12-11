@@ -1,3 +1,4 @@
+// Importación de modelos y módulos necesarios
 import User from "../models/User.js";
 import Service from "../models/Service.js";
 import Device from "../models/Device.js";
@@ -7,33 +8,32 @@ import axios from "axios";
 import { generateJwt, generateToken, decodeJwt } from "../libs/token.js";
 import { emailPasswordRecovery } from "../libs/emails.js";
 
+// Página de inicio
 const index = (request, response) => {
     response.render("auth/home", {
         page: "Welcome"
     })
 }
 
+// Formulario de inicio de sesión
 const formLogin = async (req, res) => {
-
     res.render("auth/login", {
-        page: "Iniciar sesion"
+        page: "Iniciar sesión"
     })
-
-
 }
 
+// Formulario de recuperación de contraseña
 const formPasswordRecovery = (request, response) => {
-
     response.render("auth/recovery.pug", {
         page: "Password Recovery",
-
     })
 }
 
+// Autenticación del usuario
 const authenticateUser = async (request, response) => {
-
-    await check("email").notEmpty().withMessage("El correo es requerido").isEmail().withMessage("Ese no es un formato valido").run(request)
-    await check("password").notEmpty().withMessage("La contraseña es requerida").isLength({ max: 20, min: 8 }).withMessage("La contraseña contiene almenos 8 caracteres").run(request)
+    // Validación de campos utilizando express-validator
+    await check("email").notEmpty().withMessage("El correo es requerido").isEmail().withMessage("Ese no es un formato válido").run(request);
+    await check("password").notEmpty().withMessage("La contraseña es requerida").isLength({ max: 20, min: 8 }).withMessage("La contraseña debe tener al menos 8 caracteres").run(request);
 
     let resultValidation = validationResult(request);
     if (resultValidation.isEmpty()) {
@@ -41,61 +41,51 @@ const authenticateUser = async (request, response) => {
         const userExists = await User.findOne({ where: { email } })
 
         if (!userExists) {
+            // Renderiza la página de inicio de sesión con un mensaje de error si el usuario no existe
             response.render("auth/login.pug", {
                 page: "Login",
                 errors: [{ msg: `El usuario asociado al correo: ${email} no fue encontrado` }],
-                user: {
-                    email
-                }
+                user: { email }
             })
         } else {
             if (!userExists.verified) {
+                // Renderiza la página de inicio de sesión con un mensaje de error si el usuario no está verificado
                 response.render("auth/login.pug", {
                     page: "Login",
-                    errors: [{ msg: `El  usuario con el correo ${email} aun no esta verificado` }],
-                    user: {
-                        email
-                    }
+                    errors: [{ msg: `El usuario con el correo ${email} aún no está verificado` }],
+                    user: { email }
                 })
             } else {
                 if (!userExists.verifyPassword(password)) {
+                    // Renderiza la página de inicio de sesión con un mensaje de error si la contraseña es incorrecta
                     response.render("auth/login.pug", {
                         page: "Login",
-                        errors: [{ msg: `EL correo o la contraseña es incorrecto` }],
-                        user: {
-                            email
-                        }
+                        errors: [{ msg: `El correo o la contraseña es incorrecto` }],
+                        user: { email }
                     })
                 } else {
-
                     if (userExists.type === 'Usuario') {
-                        console.log(`El usuario: ${email} Existe y esta autenticado`);
-                        //Generar el token de accesso
-                        console.log(userExists.type)
+                        // Autenticación exitosa para usuarios
                         const token = generateJwt(userExists.id);
                         response.cookie('_token', token, {
-                            httpOnly: true,//Solo via navegador, a nivel API no
+                            httpOnly: true,
                         }).redirect('/home');
-
-                    }
-                    else if (userExists.type === 'Administrador') {
+                    } else if (userExists.type === 'Administrador') {
+                        // Autenticación exitosa para administradores
                         const token = generateJwt(userExists.id);
                         response.cookie('_token', token, {
-                            httpOnly: true,//Solo via navegador, a nivel API no
-                            //secure:true  //Esto solo se habilitara en caso de conta con un certificado https
+                            httpOnly: true,
                         }).redirect('/admin-home');
                     }
                 }
             }
         }
-
     } else {
+        // Renderiza la página de inicio de sesión con mensajes de error de validación
         response.render("../views/auth/login.pug", {
             page: "Login",
             errors: resultValidation.array(),
-            user: {
-                email: request.body.email
-            }
+            user: { email: request.body.email }
         })
     }
 
