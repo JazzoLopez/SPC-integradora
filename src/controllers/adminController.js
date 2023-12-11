@@ -15,7 +15,7 @@ const insertUser = async (req, res) => {
     await check("lastname").notEmpty().withMessage("Los apellidos son obligatorios").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("tel").notEmpty().withMessage("El numero telefonico es obligatorio").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("email").notEmpty().withMessage("El correo es obligatorio").isEmail().withMessage("Ese no es un formato valido").run(req) // Express checa que el email no venga vacio y que el formato sea el correcto
-    await check("password").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8, max: 20 }).withMessage("La contraseña debe de ser de almenos 8 caracteres").run(req)// Express checa que la contraseña no venga vacia 
+    await check("password").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8, max: 20 }).withMessage("La contraseña debe de ser de almenos 8 caracteres").run(req)// Express checa que la contraseña no venga vacia y que tenga almenos 8 caracteres
     await check("repeatPassword").notEmpty().withMessage("La contraseña es obligatoria").isLength({ min: 8, max: 20 }).withMessage("La contraseña debe de ser de almenos 8 caracteres").equals(req.body.password).withMessage("Las contraseñas no son iguales").run(req)
     //res.json(validationResult(req));
     
