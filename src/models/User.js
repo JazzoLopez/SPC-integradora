@@ -21,7 +21,7 @@ const User = db.define('tbb_users', {
     },
     password:{
         type: DataTypes.STRING,
-        allowNull:false
+        allowNull:false //Se llena con contraseña
     },
     token: {
         type: DataTypes.STRING,
