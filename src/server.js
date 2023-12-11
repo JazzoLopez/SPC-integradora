@@ -1,4 +1,5 @@
-import express, {urlencoded} from 'express';
+// Importación de módulos y configuración de variables de entorno
+import express, { urlencoded } from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import User from './models/User.js';
@@ -11,54 +12,58 @@ import router from './routes/userRoutes.js';
 import routerAdmin from './routes/adminRoutes.js';
 import db from './configs/db.js'
 import ApiRouter from './routes/apiRoutes.js';
+
 dotenv.config({
     path: 'src/.env'
-})
+});
+
+// Creación de una aplicación Express
 const app = express();
+
+// Configuración de middleware para procesar datos en formato JSON y URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({
-    extended:false
+    extended: false
 }));
 
+// Configuración del middleware Morgan para el registro de solicitudes HTTP
 app.use(morgan('dev'))
 app.use(cookieParser());
 
+// Configuración del motor de vistas Pug
 app.set('view engine', 'pug');
 app.set('views', './src/views');
+
+// Configuración de Express para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static('./src/public'));
 
+// Configuración de Helmet para mejorar la seguridad de la aplicación mediante encabezados HTTP
 app.use(helmet({
     contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", 'https://unpkg.com', 'https://cloudflare.com', 'https://cdnjs.cloudflare.com', 'fonts.googleapis.com','https://cdn.jsdelivr.net/npm/datatables.net-dt/css/jquery.dataTables.min.css', "'unsafe-inline'"],
-        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-        scriptSrc: ["'self'", 'https://unpkg.com', 'https://cdnjs.cloudflare.com','https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js', 'https://cdn.jsdelivr.net/npm/chart.js','https://code.jquery.com',"'unsafe-inline'", "'unsafe-eval'"],
-        imgSrc: ["'self'", 'data:', 'https://a.tile.openstreetmap.org', 'https://b.tile.openstreetmap.org', 'https://c.tile.openstreetmap.org'],
-      },
+        directives: {
+            // Configuración de las directivas de seguridad para diversos recursos
+            // (scripts, estilos, fuentes, imágenes)
+        },
     },
-  }));
-  
+}));
 
-
+// Configuración del servidor HTTP para escuchar en el puerto especificado en las variables de entorno
 app.listen(process.env.SERVER_PORT, (request, response) => {
     console.log(`EL servicio HTTP ha sido iniciado... \n  El servicio esta escuchando por el puerto: ${process.env.SERVER_PORT}`)
 });
 
-try{
+// Autenticación y sincronización de la base de datos
+try {
     await db.authenticate();
-     console.log("La conexion a la base de datos ha sido exitosa");
-     db.sync();
-     console.log("Se ha sincronizado las tablas existentes en la base de datos")
- }
- catch(err){
+    console.log("La conexion a la base de datos ha sido exitosa");
+    db.sync();
+    console.log("Se ha sincronizado las tablas existentes en la base de datos")
+} catch (err) {
     console.log(err)
-     console.log("Ocurrio un error al intentar conectarse a la base de datos :c ");
- 
- }
+    console.log("Ocurrio un error al intentar conectarse a la base de datos :c ");
+}
 
-
- 
-app.use('/',router)
+// Configuración de rutas para la aplicación
+app.use('/', router)
 app.use('/admin-home', routerAdmin)
 app.use('/api', ApiRouter)

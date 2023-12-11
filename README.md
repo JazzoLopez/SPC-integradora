@@ -34,3 +34,5 @@ Crear una aplicacion web para optimizar un proceso de la empresa de SPC (Servici
 - datatables
 - bcrypt
 - Chart.js
+
+
