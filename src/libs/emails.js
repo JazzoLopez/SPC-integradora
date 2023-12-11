@@ -20,7 +20,7 @@ const emailRegister = async (userData) => {
     from: 'ServiciosSPC@gmail.com', //Emitente
     to: email, //Destinatario de la persona
     subject: "SPC-2.0: Verifica tu cuenta", //Asunto
-    text: "Bienvenido a SPC, Para empezar a ver tus servicios por favor verifica tu cuenta.", //Cuerpo
+    text: "Bienvenido a SPC, Para empezar a ver tus servicios por favor verifica tu cuenta.", //Cuerpo del correo
     html:
     `<html>
     <head>
