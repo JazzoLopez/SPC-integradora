@@ -17,7 +17,7 @@ const User = db.define('tbb_users', {
     },
     email:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:false //Campo para llenar con email
     },
     password:{
         type: DataTypes.STRING,
