@@ -92,7 +92,9 @@ const authenticateUser = async (request, response) => {
     return 0;
 }
 
+// Página de inicio del usuario
 const userHome = async (req, res) => {
+    // Verificación del token del usuario y redirección si no hay token
     const userToken = req.cookies._token;
     if (!userToken) {
         return res.redirect('login');
@@ -101,23 +103,19 @@ const userHome = async (req, res) => {
     const decodedToken = decodeJwt(userToken);
     const { userID } = decodedToken;
 
-    //console.log(userID);
-
+    // Obtención de datos del usuario y servicios asociados
     const userData = await User.findOne({ where: { id: userID } });
-    //console.log(userData);
     if (userData.type !== "Usuario") {
         return res.redirect('login');
     }
 
-    const servicesData = await Service.findAll({ where: { userID }, include: Device /*Incluye los datos del dispositivo relacionados*/ });
+    const servicesData = await Service.findAll({ where: { userID }, include: Device });
     const response = await axios.get('https://theaudiodb.com/api/v1/json/2/discography.php?s=coldplay');
     const discografia = response.data;
     const numeroAleatorio = Math.floor(Math.random() * 9) + 1;
-
-    console.log(numeroAleatorio);
-
     const albumName = discografia.album[numeroAleatorio].strAlbum;
 
+    // Renderiza la página de inicio del usuario con los datos obtenidos
     res.render('user/userhome', {
         user: userData.name,
         servicesData,
@@ -125,48 +123,43 @@ const userHome = async (req, res) => {
     });
 };
 
+// Cierre de sesión
 const logout = (req, res) => {
     res.clearCookie('_token');
     res.redirect('/login');
 }
 
+// Confirmación de la cuenta del usuario
 const confirmAccount = async (req, res) => {
-    const tokenRecived = req.params.token
+    const tokenReceived = req.params.token;
     const userOwner = await User.findOne({
         where: {
-            token: tokenRecived
+            token: tokenReceived
         }
-    })
-    if (!userOwner) {
+    });
 
-    
+    if (!userOwner) {
+        // Renderiza la página de confirmación con un mensaje de error si el token no existe o ha expirado
         res.render('auth/confirm-account', {
-            page: 'Verificacion de cuenta',
+            page: 'Verificación de cuenta',
             error: true,
             msg: 'Lo sentimos, el token no existe o ya ha expirado',
-            button: 'Volver al inidio de sesion'
-
-        })
-    }
-    else {
+            button: 'Volver al inicio de sesión'
+        });
+    } else {
         console.log("El token existe");
         userOwner.token = null;
         userOwner.verified = true;
         await userOwner.save();
-        // ESTA OPERACION REALIZA EL UPDATE EN LA BASE DE DATOS.
+        // Renderiza la página de confirmación con un mensaje de éxito
         res.render('auth/confirm-account', {
             page: 'Verificación de cuenta.',
             error: false,
             msg: 'Tu cuenta ha sido activada correctamente.',
-            button: 'Ahora tu puedes iniciar sesion',
-
+            button: 'Ahora puedes iniciar sesión'
         });
-
-    };
-
-
+    }
 }
-
 
 const formPasswordUpdate = async (request, response) => {
     const { token } = request.params;
