@@ -13,7 +13,7 @@ const User = db.define('tbb_users', {
     },
     tel:{
         type: DataTypes.STRING,
-        allowNull:false
+        allowNull:false //Cammpo que se llena con el numero de telefono
     },
     email:{
         type:DataTypes.STRING,
