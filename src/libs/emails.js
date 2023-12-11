@@ -15,7 +15,7 @@ const transport = nodemailer.createTransport({
 const emailRegister = async (userData) => {
   const { name, email, token } = userData
   console.log(`Intentando enviar un correo electronico de activación al usuario ${email}`)
-  //* ENVIANDO  EL  CORREO 
+  //* ENVIANDO  EL  CORREO PARA ACTIVACION DE LA CUENTA
   await transport.sendMail({
     from: 'ServiciosSPC@gmail.com', //Emitente
     to: email, //Destinatario
