@@ -55,5 +55,5 @@ User.prototype.verifyPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 }
 
-// Exportación del modelo 'User' para ser utilizado en otras partes de la aplicación
+
 export default User;

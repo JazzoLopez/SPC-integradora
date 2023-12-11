@@ -37,7 +37,7 @@ const decodeJwt = (token) => {
     }
 };
 
-// Exportación de las funciones para ser utilizadas en otras partes de la aplicación
+
 export {
     generateToken, generateJwt, decodeJwt
 };
