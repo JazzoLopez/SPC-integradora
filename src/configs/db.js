@@ -23,5 +23,5 @@ const db = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.D
     },
 });
 
-// Exportación de la instancia Sequelize para ser utilizada en otras partes de la aplicación
+
 export default db;
