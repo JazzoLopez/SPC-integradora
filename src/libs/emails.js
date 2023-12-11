@@ -18,7 +18,7 @@ const emailRegister = async (userData) => {
   //* ENVIANDO  EL  CORREO PARA ACTIVACION DE LA CUENTA
   await transport.sendMail({
     from: 'ServiciosSPC@gmail.com', //Emitente
-    to: email, //Destinatario
+    to: email, //Destinatario de la persona
     subject: "SPC-2.0: Verifica tu cuenta", //Asunto
     text: "Bienvenido a SPC, Para empezar a ver tus servicios por favor verifica tu cuenta.", //Cuerpo
     html:
