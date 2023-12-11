@@ -32,7 +32,7 @@ const insertUser = async (req, res) => {
 
         res.render("auth/register.pug", ({
             page:"Registro de usuarios",
-            errors: [{ msg: `El usuario ${req.body.email} ya existe` }],
+            errors: [{ msg: `El usuario ${req.body.email} ya existe` }], //Si el usuario ya esta resgitrado, manda mensaje de que ya existe 
             user: {
                 name: req.body.name,
                 email: req.body.email,
