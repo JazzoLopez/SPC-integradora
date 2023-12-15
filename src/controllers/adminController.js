@@ -11,7 +11,7 @@ import axios from "axios";
 
 const insertUser = async (req, res) => {
 
-    await check("name").notEmpty().withMessage("El nombre es obligatorii").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
+    await check("name").notEmpty().withMessage("El nombre es obligatorio").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("lastname").notEmpty().withMessage("Los apellidos son obligatorios").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("tel").notEmpty().withMessage("El numero telefonico es obligatorio").run(req) //* Express checa el nombre que no venga vacio AHORA MISMO
     await check("email").notEmpty().withMessage("El correo es obligatorio").isEmail().withMessage("Ese no es un formato valido").run(req)
